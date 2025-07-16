@@ -1,0 +1,46 @@
+module priority_encoder(D,E,seg,D1_AN);
+input E;
+input [7:0] D;
+output reg [6:0] seg;
+reg [3:0] Y;
+output reg [3:0] D1_AN;
+
+always@(*) begin
+    if (!E)
+         Y = 4'b0000;
+     else begin
+    casex(D)
+    8'b00000000 : Y = 4'b0000;
+    8'b00000001 : Y = 4'b0001;
+    8'b0000001x : Y = 4'b0010;
+    8'b000001xx : Y = 4'b0011;
+    8'b00001xxx : Y = 4'b0100;
+    8'b0001xxxx : Y = 4'b0101;
+    8'b001xxxxx : Y = 4'b0110;
+    8'b01xxxxxx : Y = 4'b0111;
+    8'b1xxxxxxx : Y = 4'b1000;
+    default : Y = 4'b0000;
+    endcase
+    end  
+    end
+    
+ always@(*) begin
+    D1_AN = 4'b1110;
+    if (!E) begin
+        seg = 7'b0111111;
+        end else begin
+    case(Y)
+            4'b0000: seg = 7'b1000000;
+            4'b0001: seg = 7'b1111001;
+            4'b0010: seg = 7'b0100100;
+            4'b0011: seg = 7'b0110000;
+            4'b0100: seg = 7'b0011001;
+            4'b0101: seg = 7'b0010010;
+            4'b0110: seg = 7'b0000010;
+            4'b0111: seg = 7'b1111000;
+            4'b1000: seg = 7'b0000000;
+            default: seg = 7'b1111111; 
+     endcase
+     end   
+     end     
+endmodule
